@@ -1,0 +1,4 @@
+<resources>
+
+    <style name="Theme.CustomKeyboardPopupBarV2" parent="@style/Theme.Leanback" />
+</resources>
