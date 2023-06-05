@@ -5,4 +5,12 @@
     <color name="label">#FBFBFB</color>
     <color name="bar">#292929</color>
     <color name="cursor">#66FFFFFF</color>
+
+    <color name="popupBar">#F7292929</color>
+    <color name="popupLabel">#0A0A0A</color>
+    <color name="red">#ff392e</color>
+    <color name="green">#48ff51</color>
+    <color name="yellow">#f6ff48</color>
+    <color name="blue">#5148ff</color>
+    <color name="grey">#878787</color>
 </resources>

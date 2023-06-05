@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
@@ -13,6 +15,10 @@ import com.dama.customkeyboardpopupbarv2.R;
 
 public class CursorSpaceView extends FrameLayout {
     private KeyView cursor;
+    private KeyView highlightRed;
+    private KeyView highlightGreen;
+    private KeyView highlightYellow;
+    private KeyView highlightBlue;
 
     public CursorSpaceView(@NonNull Context context) {
         super(context);
@@ -30,10 +36,63 @@ public class CursorSpaceView extends FrameLayout {
         //init cursor
         Drawable cs = getResources().getDrawable(R.drawable.cursor);
         cursor = new KeyView(getContext(), cs, null, "#FBFBFB");
-        initPosition(keyView);
+        initPosition(keyView, 0);
+        //init highlight
+        Drawable hl = getResources().getDrawable(R.drawable.suggestion_key);
+        highlightRed = new KeyView(getContext(), hl, "", "#ffffff");
+        highlightGreen = new KeyView(getContext(), hl, "", "#ffffff");
+        highlightYellow = new KeyView(getContext(), hl, "", "#ffffff");
+        highlightBlue = new KeyView(getContext(), hl, "", "#ffffff");
     }
 
-    private void initPosition(KeyView keyView){
+    public void setPositionHighlights(KeyView r, KeyView g, KeyView yy, KeyView b){
+        setPosition(highlightRed, r);
+        setPosition(highlightGreen, g);
+        setPosition(highlightYellow, yy);
+        setPosition(highlightBlue, b);
+    }
+
+    public void showHighlights(){
+        highlightRed.setVisibility(View.VISIBLE);
+        highlightGreen.setVisibility(View.VISIBLE);
+        highlightYellow.setVisibility(View.VISIBLE);
+        highlightBlue.setVisibility(View.VISIBLE);
+    }
+
+    public void hideHighlights(){
+        highlightRed.setVisibility(View.GONE);
+        highlightGreen.setVisibility(View.GONE);
+        highlightYellow.setVisibility(View.GONE);
+        highlightBlue.setVisibility(View.GONE);
+    }
+
+    private void setPosition(KeyView in, KeyView out){
+        // Use post() to postpone code execution
+        out.post(() -> {
+            removeView(highlightRed);
+            Rect offsetViewBounds = new Rect();
+            out.getDrawingRect(offsetViewBounds);
+            offsetDescendantRectToMyCoords(out, offsetViewBounds);
+            int x = offsetViewBounds.left;
+            int y = offsetViewBounds.top;
+
+            int lenPopupBar = getWidth();
+            int lenKey = out.getWidth();
+
+            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.WRAP_CONTENT,
+                    FrameLayout.LayoutParams.WRAP_CONTENT
+            );
+            layoutParams.leftMargin = x; //set x
+            layoutParams.topMargin = y; //set y
+            in.setLayoutParams(layoutParams);
+            addView(in);
+        });
+    }
+
+    public void initPosition(KeyView keyView, int k){
+        KeyView cORh = cursor;
+
         keyView.post(() -> {
             Rect offsetViewBounds = new Rect();
             keyView.getDrawingRect(offsetViewBounds);
@@ -42,17 +101,18 @@ public class CursorSpaceView extends FrameLayout {
             int x = offsetViewBounds.left;
             int y = offsetViewBounds.top;
 
-            removeView(cursor);
+            removeView(cORh);
             LayoutParams layoutParams = new LayoutParams(
                     LayoutParams.WRAP_CONTENT,
                     LayoutParams.WRAP_CONTENT
             );
             layoutParams.leftMargin = x; //set x
             layoutParams.topMargin = y; //set y
-            cursor.setLayoutParams(layoutParams);
-            addView(cursor);
+            cORh.setLayoutParams(layoutParams);
+            addView(cORh);
 
-            cursor.changeDimension(keyView.getKeyHeight(), keyView.getKeyWidth(), 0);
+            if(k==0)
+                cORh.changeDimension(keyView.getKeyHeight(), keyView.getKeyWidth(), 0);
         });
     }
 
@@ -99,9 +159,5 @@ public class CursorSpaceView extends FrameLayout {
 
         //start animation on view
         cursor.startAnimation(animation);
-    }
-
-    public void destroyCursor(){
-        removeView(cursor);
     }
 }

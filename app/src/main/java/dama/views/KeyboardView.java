@@ -3,12 +3,17 @@ package dama.views;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.Gravity;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import androidx.core.content.ContextCompat;
 import com.dama.customkeyboardpopupbarv2.R;
 import java.util.ArrayList;
 import java.util.HashMap;
-import dama.controller.Controller;
+import dama.controllers.Controller;
 import dama.utils.Cell;
 import dama.utils.Key;
 import dama.utils.Utils;
@@ -28,7 +33,7 @@ public class KeyboardView extends TableLayout {
         rows = new HashMap<>();
         String colorLabel = Utils.colorToString(ContextCompat.getColor(getContext(), R.color.label));
 
-        //create rows and bars
+        //create rows
         for(int i = 0; i< Controller.ROWS; i++){
             KeyboardRowView row = new KeyboardRowView(getContext());
             ArrayList<Key> keys = allKeys.get(i);
@@ -47,8 +52,7 @@ public class KeyboardView extends TableLayout {
         return rows.get(cell.getRow()).getKeyView(cell.getCol());
     }
 
-    public void destroyAll(){
-        for(int i=0 ; i< rows.size(); i++)
-            removeView(rows.get(i));
+    public KeyView getKeyView(Cell cell){
+        return rows.get(cell.getRow()).getKeyView(cell.getCol());
     }
 }

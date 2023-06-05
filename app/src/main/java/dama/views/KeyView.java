@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.TableRow;
 import androidx.annotation.Nullable;
 import com.dama.customkeyboardpopupbarv2.R;
-import dama.controller.Controller;
+import dama.controllers.Controller;
 
 public class KeyView extends ImageView {
     private float textSize;
@@ -24,6 +24,7 @@ public class KeyView extends ImageView {
     private String label;
     private Bitmap bitmap;
     private Drawable drawable;
+    private String labelColor;
 
 
     public KeyView(Context context) {
@@ -58,13 +59,10 @@ public class KeyView extends ImageView {
         changeLabel(label, labelColor);
     }
 
-    public void changeDrawableColor(int color){
-        this.drawable.mutate().setTint(color);
-        //setBackground(this.drawable);
-    }
 
     public void changeLabel(String label, String labelColor){
         this.label = label;
+        this.labelColor = labelColor;
 
         setBitmap();
 
@@ -86,6 +84,8 @@ public class KeyView extends ImageView {
         this.keyWidth = width;
         this.textSize = textSize;
         setBitmap();
+        if(this.label != null && this.label.length()>0)
+            changeLabel(this.label, this.labelColor);
     }
 
     public void addKeyParams(int code, boolean isSuggestion){

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dama.views.PopupBarView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:rowCount="1"
+    android:columnCount="4"
+    android:orientation="horizontal"
+    android:id="@+id/keyboard_popup"
+    android:background="@drawable/popup_bar_background"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:elevation="10dp"
+    android:paddingHorizontal="2dp"
+    android:paddingVertical="2dp">
+
+    <RelativeLayout
+        android:layout_width="@dimen/popup_key_width"
+        android:layout_height="@dimen/popup_key_height"
+        android:layout_marginRight="4dp">
+        <ImageView
+            android:id="@+id/redKey"
+            android:background="@drawable/popup_bar_key_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/red"/>
+        <TextView
+            android:textColor="@color/background"
+            android:textStyle="bold"
+            android:id="@+id/labelRedKey"
+            android:text="-"
+            android:layout_centerInParent="true"
+            android:textSize="@dimen/popup_key_text_size"
+            android:labelFor="@id/redKey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="@dimen/popup_key_width"
+        android:layout_height="@dimen/popup_key_height"
+        android:layout_marginRight="4dp">
+        <ImageView
+            android:id="@+id/greenKey"
+            android:background="@drawable/popup_bar_key_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/green" />
+        <TextView
+            android:textColor="@color/background"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            android:id="@+id/labelGreenKey"
+            android:text="-"
+            android:textSize="@dimen/popup_key_text_size"
+            android:labelFor="@id/greenKey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="@dimen/popup_key_width"
+        android:layout_height="@dimen/popup_key_height"
+        android:layout_marginRight="4dp">
+        <ImageView
+            android:id="@+id/yellowKey"
+            android:background="@drawable/popup_bar_key_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/yellow" />
+        <TextView
+            android:textColor="@color/background"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            android:id="@+id/labelYellowKey"
+            android:text="-"
+            android:textSize="@dimen/popup_key_text_size"
+            android:labelFor="@id/yellowKey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginRight="4dp"
+        android:layout_width="@dimen/popup_key_width"
+        android:layout_height="@dimen/popup_key_height">
+        <ImageView
+            android:id="@+id/blueKey"
+            android:background="@drawable/popup_bar_key_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/blue"/>
+        <TextView
+            android:textColor="@color/background"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            android:id="@+id/labelBlueKey"
+            android:text="-"
+            android:textSize="@dimen/popup_key_text_size"
+            android:labelFor="@id/blueKey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+</dama.views.PopupBarView>

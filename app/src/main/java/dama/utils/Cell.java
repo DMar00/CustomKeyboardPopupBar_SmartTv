@@ -1,5 +1,7 @@
 package dama.utils;
 
+import androidx.annotation.NonNull;
+
 /**
  * The Cell class represents a coordinate (row,col) in the keyboard
  * row starts from 0
@@ -34,11 +36,20 @@ public class Cell {
         return row >= 0 && col >= 0;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Cell{" +
                 "row=" + row +
                 ", col=" + col +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cell cell = (Cell) o;
+        return row == cell.row && col == cell.col;
     }
 }

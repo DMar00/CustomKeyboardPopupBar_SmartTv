@@ -1,5 +1,7 @@
 package dama.customkeyboardbase;
 
+import static java.lang.Character.isLetter;
+
 import android.annotation.SuppressLint;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
@@ -10,12 +12,13 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.widget.FrameLayout;
 import com.dama.customkeyboardpopupbarv2.R;
-import dama.controller.Controller;
-import dama.controller.ControllerOne;
+import dama.controllers.Controller;
+import dama.controllers.ControllerOne;
 import dama.utils.Cell;
 import dama.utils.Key;
 import dama.views.CursorSpaceView;
 import dama.views.KeyboardView;
+import dama.views.PopupBarView;
 
 public class KeyboardImeService extends InputMethodService {
     private Controller controller;
@@ -24,6 +27,8 @@ public class KeyboardImeService extends InputMethodService {
     private CursorSpaceView cursorSpaceView;
     private KeyboardView keyboardView;
     private FrameLayout rootView;
+    private PopupBarView popupBarView;
+    private String ctxString = "    ";
 
     @SuppressLint("InflateParams")
     @Override
@@ -35,8 +40,11 @@ public class KeyboardImeService extends InputMethodService {
         cursorSpaceView = rootView.findViewById(R.id.cursorSpace_view);
         keyboardView = cursorSpaceView.findViewById(R.id.keyboard_view);
 
-        ControllerOne cOne = new ControllerOne(qwertyKeyboard,cursorSpaceView,keyboardView);
-        controller = cOne;
+        popupBarView = (PopupBarView) this.getLayoutInflater().inflate(R.layout.popup_bar, null);
+        //popupBarView = cursorSpaceView.findViewById(R.id.keyboard_popup);
+        ControllerOne controllerOne = new ControllerOne(getApplicationContext(),qwertyKeyboard,cursorSpaceView,keyboardView, popupBarView);
+        controller = controllerOne;
+
         return rootView;
     }
 
@@ -60,6 +68,8 @@ public class KeyboardImeService extends InputMethodService {
             //Log.d("KeyboardImeService", "onKeyDown --> "+ keyCode);
             InputConnection ic = getCurrentInputConnection();
             playClick(keyCode);
+
+
             switch (keyCode){
                 case KeyEvent.KEYCODE_BACK:
                     hideKeyboard();
@@ -68,9 +78,13 @@ public class KeyboardImeService extends InputMethodService {
                 case KeyEvent.KEYCODE_DPAD_RIGHT:
                 case KeyEvent.KEYCODE_DPAD_UP:
                 case KeyEvent.KEYCODE_DPAD_DOWN:
+                    if(controller.isBarsShown()){
+                        controller.hidePopUpBar();
+                    }
                     Cell newCell = controller.newFocus(keyCode);
                     if (controller.isNextFocusable(newCell, keyCode)){
                         controller.setFocus(newCell);
+                        controller.moveFocusPosition(controller.getFocus());
                     }
                     break;
                 case KeyEvent.KEYCODE_DPAD_CENTER:
@@ -79,6 +93,10 @@ public class KeyboardImeService extends InputMethodService {
                     //write char
                     handleText(key.getCode(), ic);
                     char c = (char) key.getCode();
+                    if(isLetter(c)){
+                        ctxString = ctxString.substring(1) + key.getLabel();
+                        controller.showPopUpBar(ctxString);
+                    }
                     break;
             }
             return true;
