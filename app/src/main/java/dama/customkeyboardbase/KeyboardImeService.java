@@ -93,10 +93,30 @@ public class KeyboardImeService extends InputMethodService {
                     //write char
                     handleText(key.getCode(), ic);
                     char c = (char) key.getCode();
+                    ctxString = ctxString.substring(1) + key.getLabel();
                     if(isLetter(c)){
-                        ctxString = ctxString.substring(1) + key.getLabel();
                         controller.showPopUpBar(ctxString);
                     }
+                    break;
+                case KeyEvent.KEYCODE_1:
+                    handleText( controller.getBarKeys().get(0).getCode(), ic);
+                    ctxString = ctxString.substring(1) + controller.getBarKeys().get(0).getLabel();
+                    controller.pressColorKey(0, ctxString);
+                    break;
+                case KeyEvent.KEYCODE_2:
+                    handleText( controller.getBarKeys().get(1).getCode(), ic);
+                    ctxString = ctxString.substring(1) + controller.getBarKeys().get(1).getLabel();
+                    controller.pressColorKey(1, ctxString);
+                    break;
+                case KeyEvent.KEYCODE_3:
+                    handleText( controller.getBarKeys().get(2).getCode(), ic);
+                    ctxString = ctxString.substring(1) + controller.getBarKeys().get(2).getLabel();
+                    controller.pressColorKey(2, ctxString);
+                    break;
+                case KeyEvent.KEYCODE_4:
+                    handleText( controller.getBarKeys().get(3).getCode(), ic);
+                    ctxString = ctxString.substring(1) + controller.getBarKeys().get(3).getLabel();
+                    controller.pressColorKey(3, ctxString);
                     break;
             }
             return true;

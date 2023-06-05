@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+
 import dama.utils.Cell;
 import dama.utils.Key;
 import dama.utils.Utils;
@@ -69,6 +71,16 @@ public abstract class Controller {
                 }
                 this.keys.put(i, rowKeys);
             }
+        }
+
+    printMap(letterPositions);
+    }
+
+    private  void printMap(HashMap<Character, Cell> hashMap){
+        for (Map.Entry<Character, Cell> entry : hashMap.entrySet()) {
+            Character chiave = entry.getKey();
+            Cell valore = entry.getValue();
+            Log.d("printMap",chiave + " -> " + valore);
         }
     }
 
@@ -202,15 +214,15 @@ public abstract class Controller {
         //showPopupBar
         popupBarView.initPosition(this.cursorSpaceView, keyboardView.getKeyView(getFocus()));
         popupBarView.show();
-        //popupBarView.setPosition(this.cursorSpaceView, keyboardView.getKeyView(getFocus()));
 
-        //todo highlights
-        /*Cell rCell = letterPositions.get(suggestions[0]);
+        //showHighlights
+        Cell rCell = letterPositions.get(suggestions[0]);
         Cell gCell = letterPositions.get(suggestions[1]);
         Cell yCell = letterPositions.get(suggestions[2]);
         Cell bCell = letterPositions.get(suggestions[3]);
+        Log.d("cells highlights",""+rCell+" - "+gCell+" - "+yCell+" - "+bCell);
         cursorSpaceView.setPositionHighlights(keyboardView.getKeyView(rCell), keyboardView.getKeyView(gCell), keyboardView.getKeyView(yCell), keyboardView.getKeyView(bCell));
-        cursorSpaceView.showHighlights();*/
+        cursorSpaceView.showHighlights();
 
         barsShown = true;
     }
@@ -220,6 +232,19 @@ public abstract class Controller {
         cursorSpaceView.hideHighlights();
         barKeys.clear();
         barsShown = false;
+    }
+
+    public void pressColorKey(int i, String ctx){
+        //get key in color highlight
+        Key coloredKey = barKeys.get(i);
+        Cell newFocus = letterPositions.get(coloredKey.getLabel().charAt(0));
+        //
+        hidePopUpBar();
+        //set new focus
+        setFocus(newFocus);
+        moveFocusPosition(getFocus());
+        //show bar on new focus
+        showPopUpBar(ctx);
     }
 
 
@@ -245,6 +270,10 @@ public abstract class Controller {
         this.barsShown = barsShown;
     }
 
+    public ArrayList<Key> getBarKeys() {
+        return barKeys;
+    }
+
     /*********************************KEYS*************************************/
     public ArrayList<Key> getKeysAtRow(int index){
         return keys.get(index);
@@ -267,21 +296,8 @@ public abstract class Controller {
         getKeyboardView().getKeyView(cell).changeLabel(label,"#FBFBFB");
     }
 
-
-
     /*********************************KEYBOARD VIEW*************************************/
     public KeyboardView getKeyboardView() {
         return keyboardView;
     }
-
-    //todo modify
-    /*protected void reInitFocusAndHighlight(Cell newFocus){
-        this.cursorSpaceView.initPosition(this.keyboardView.getKeyViewAtCell(newFocus), 0);
-        this.cursorSpaceView.initPosition(this.keyboardView.getKeyViewAtCell(newFocus), 1);
-    }
-
-    //todo modify
-    public void reInitFocus(Cell newFocus){
-        this.cursorSpaceView.initPosition(this.keyboardView.getKeyViewAtCell(newFocus), 0);
-    }*/
 }

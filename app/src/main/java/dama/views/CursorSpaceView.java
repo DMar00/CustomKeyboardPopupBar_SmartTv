@@ -11,6 +11,8 @@ import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+
 import com.dama.customkeyboardpopupbarv2.R;
 
 public class CursorSpaceView extends FrameLayout {
@@ -40,9 +42,13 @@ public class CursorSpaceView extends FrameLayout {
         //init highlight
         Drawable hl = getResources().getDrawable(R.drawable.suggestion_key);
         highlightRed = new KeyView(getContext(), hl, "", "#ffffff");
+        highlightRed.changeDrawableColorStroke(ContextCompat.getColor(getContext(), R.color.red));
         highlightGreen = new KeyView(getContext(), hl, "", "#ffffff");
+        highlightGreen.changeDrawableColorStroke(ContextCompat.getColor(getContext(), R.color.green));
         highlightYellow = new KeyView(getContext(), hl, "", "#ffffff");
+        highlightYellow.changeDrawableColorStroke(ContextCompat.getColor(getContext(), R.color.yellow));
         highlightBlue = new KeyView(getContext(), hl, "", "#ffffff");
+        highlightBlue.changeDrawableColorStroke(ContextCompat.getColor(getContext(), R.color.blue));
     }
 
     public void setPositionHighlights(KeyView r, KeyView g, KeyView yy, KeyView b){
@@ -69,7 +75,7 @@ public class CursorSpaceView extends FrameLayout {
     private void setPosition(KeyView in, KeyView out){
         // Use post() to postpone code execution
         out.post(() -> {
-            removeView(highlightRed);
+            removeView(in);
             Rect offsetViewBounds = new Rect();
             out.getDrawingRect(offsetViewBounds);
             offsetDescendantRectToMyCoords(out, offsetViewBounds);
@@ -86,6 +92,7 @@ public class CursorSpaceView extends FrameLayout {
             layoutParams.leftMargin = x; //set x
             layoutParams.topMargin = y; //set y
             in.setLayoutParams(layoutParams);
+            in.changeDimension(out.getKeyHeight(), out.getKeyWidth(), 0);
             addView(in);
         });
     }
