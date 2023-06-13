@@ -60,12 +60,13 @@ public abstract class Controller {
         if(keys.size()==0){
             int cols = COLS;
             for(int i=0 ; i<ROWS; i++) {
+                //todo problem with other keys in ROWS-1
                 if(i==ROWS-1) cols = 7;
                 ArrayList<Key> rowKeys = new ArrayList<>();
                 for (int j = 0; j < cols; j++) {
                     Keyboard.Key k = keyboard.getKeys().get(getKeyIndex(new Cell(i, j)));
                     Key key = new Key(k.codes[0], k.label.toString(), null);
-                    if(key.getLabel().length()>0)
+                    if(key.getLabel().length()==1) //todo instead of >0
                         letterPositions.put(key.getLabel().charAt(0), new Cell(i, j));
                     rowKeys.add(key);
                 }
@@ -117,6 +118,20 @@ public abstract class Controller {
             case KeyEvent.KEYCODE_DPAD_UP:
                 int r1 = this.focus.getRow() - 1;
                 int c1 = this.focus.getCol();
+                if(this.focus.getRow() == (ROWS-1)){
+                    Log.d("up at last row", "col: "+this.focus.getCol());
+                    switch (this.focus.getCol()){
+                        case 4:
+                            c1 = 7;
+                            break;
+                        case 5:
+                            c1 = 8;
+                            break;
+                        case 6:
+                            c1 = 9;
+                            break;
+                    }
+                }
                 newCell.setRow(r1);
                 newCell.setCol(c1);
                 break;
@@ -127,6 +142,19 @@ public abstract class Controller {
                 if(this.focus.getRow() == (ROWS-2)  && (this.focus.getCol()>=4 && this.focus.getCol()<=6)) {
                     if(!isBarsShown())
                         c2 = 3; //in col 3 row 4 there is space bar
+                }else if(this.focus.getRow() == (ROWS-2)  && (this.focus.getCol()>=7 && this.focus.getCol()<=9)){
+                    //todo i have adding this if
+                    switch (this.focus.getCol()){
+                        case 7:
+                            c2 = 4;
+                            break;
+                        case 8:
+                            c2 = 5;
+                            break;
+                        case 9:
+                            c2 = 6;
+                            break;
+                    }
                 }
                 newCell.setCol(c2);
                 newCell.setRow(r2);
@@ -137,13 +165,17 @@ public abstract class Controller {
 
     public boolean isNextFocusable(Cell newFocus, int direction){
         if(isFocusInRange(newFocus) && !(isInvalidKey(newFocus)) && !(isHiddenKey(newFocus))){
-            if(direction == KeyEvent.KEYCODE_DPAD_LEFT || direction == KeyEvent.KEYCODE_DPAD_RIGHT){
+            return true;
+            //todo comment this
+            /*if(direction == KeyEvent.KEYCODE_DPAD_LEFT || direction == KeyEvent.KEYCODE_DPAD_RIGHT){
                 return focus.getRow() == newFocus.getRow();
+
             }else if (direction == KeyEvent.KEYCODE_DPAD_UP || direction == KeyEvent.KEYCODE_DPAD_DOWN) {
                 if(newFocus.getRow()!= (ROWS-1))    //for space key not same column
                     return focus.getCol() == newFocus.getCol();
                 else return true;
-            }
+
+            }*/
         }
         return false;
     }

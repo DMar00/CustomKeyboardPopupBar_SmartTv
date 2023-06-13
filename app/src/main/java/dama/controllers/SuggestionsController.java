@@ -79,6 +79,7 @@ public class SuggestionsController {
     }
 
     private String getSuggestions(String context, String suggestionData) {
+        //todo problem if i write symbols
         int sequenceNumber = sequenceToNum(context);
         return suggestionData.substring(sequenceNumber*NUM_SUG,(sequenceNumber*NUM_SUG)+NUM_SUG);
     }
