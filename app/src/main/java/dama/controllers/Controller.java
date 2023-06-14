@@ -65,7 +65,7 @@ public abstract class Controller {
                 ArrayList<Key> rowKeys = new ArrayList<>();
                 for (int j = 0; j < cols; j++) {
                     Keyboard.Key k = keyboard.getKeys().get(getKeyIndex(new Cell(i, j)));
-                    Key key = new Key(k.codes[0], k.label.toString(), null);
+                    Key key = new Key(k.codes[0], k.label.toString(), k.icon);  //todo MOOD k.icon instead null
                     if(key.getLabel().length()==1) //todo instead of >0
                         letterPositions.put(key.getLabel().charAt(0), new Cell(i, j));
                     rowKeys.add(key);
@@ -181,7 +181,11 @@ public abstract class Controller {
     }
 
     public boolean isFocusInRange(Cell focus) {
-        return (focus.getCol() < COLS && focus.getRow() < ROWS && focus.isValidPosition());
+        //todo in the last row if i go over horizontal 7th key
+        int cols = COLS;
+        if(focus.getRow() == ROWS-1)
+            cols = 7;
+        return (focus.getCol() < cols && focus.getRow() < ROWS && focus.isValidPosition());
     }
 
     public boolean isHiddenKey(Cell focus){
@@ -205,7 +209,7 @@ public abstract class Controller {
     }
 
     public void moveFocusPosition(Cell newFocus){
-        this.cursorSpaceView.moveCursor(this.keyboardView.getKeyViewAtCell(newFocus));
+            this.cursorSpaceView.moveCursor(this.keyboardView.getKeyViewAtCell(newFocus));
     }
 
     /*********************************SUGGESTIONS*************************************/
@@ -219,6 +223,7 @@ public abstract class Controller {
         for(char c:suggestions){
             this.barKeys.add(charToKey(c));
         }
+        //TODO change _ to space symbol
         if(suggestionsLength == 4){
             String red;
             if(suggestions[0]==' ')
@@ -272,9 +277,14 @@ public abstract class Controller {
         Cell newFocus = letterPositions.get(coloredKey.getLabel().charAt(0));
         //
         hidePopUpBar();
+
         //set new focus
-        setFocus(newFocus);
-        moveFocusPosition(getFocus());
+        if(!cursorSpaceView.isAnimRunning()){   //todo add if - DD
+            setFocus(newFocus);
+            moveFocusPosition(getFocus());
+        }
+
+
         //show bar on new focus
         showPopUpBar(ctx);
     }
@@ -331,5 +341,9 @@ public abstract class Controller {
     /*********************************KEYBOARD VIEW*************************************/
     public KeyboardView getKeyboardView() {
         return keyboardView;
+    }
+
+    public CursorSpaceView getCursorSpaceView() {
+        return cursorSpaceView;
     }
 }

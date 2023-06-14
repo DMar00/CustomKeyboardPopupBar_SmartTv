@@ -66,8 +66,10 @@ public class KeyboardImeService extends InputMethodService {
         //hide bars
         controller.hidePopUpBar();
         //set initial focus
-        controller.setFocus(new Cell(1,0));
-        controller.moveFocusPosition(controller.getFocus());
+        if(!controller.getCursorSpaceView().isAnimRunning()) {
+            controller.setFocus(new Cell(1, 0));
+            controller.moveFocusPosition(controller.getFocus());
+        }
         //Log.d("KeyboardImeService", "onFinishInputView");
     }
 
@@ -92,8 +94,10 @@ public class KeyboardImeService extends InputMethodService {
                     }
                     Cell newCell = controller.newFocus(keyCode);
                     if (controller.isNextFocusable(newCell, keyCode)){
-                        controller.setFocus(newCell);
-                        controller.moveFocusPosition(controller.getFocus());
+                        if(!controller.getCursorSpaceView().isAnimRunning()){
+                            controller.setFocus(newCell);
+                            controller.moveFocusPosition(controller.getFocus());
+                        }
                     }
                     break;
                 case KeyEvent.KEYCODE_DPAD_CENTER:
@@ -150,12 +154,8 @@ public class KeyboardImeService extends InputMethodService {
                 //char preChar = ic.getTextBeforeCursor(4,0).toString().charAt(0);
                 //ctxString = preChar + ctxString.substring(0,4);
                 break;
-            /*case -66:
-                //false keys
-                break;*/
             case 66:
                 //enter key
-                //todo enter key
                 Log.d("Handle", "enter key");
                 ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
                 ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER));

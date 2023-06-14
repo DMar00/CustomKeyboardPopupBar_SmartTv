@@ -37,7 +37,7 @@
         <Key android:codes="46"  android:keyLabel="." />
     </Row>
     <Row>
-        <Key android:codes="-66" android:keyLabel="Shift" android:keyEdgeFlags="left"/>
+        <Key android:codes="-66" android:keyLabel=""  android:keyIcon="@drawable/shift" android:keyEdgeFlags="left"/>
         <Key android:codes="122" android:keyLabel="z" />
         <Key android:codes="120" android:keyLabel="x" />
         <Key android:codes="99"  android:keyLabel="c" />
@@ -46,16 +46,16 @@
         <Key android:codes="110" android:keyLabel="n" />
         <Key android:codes="109" android:keyLabel="m" />
         <Key android:codes="44"  android:keyLabel=","/>
-        <Key android:codes="24" android:keyLabel="Canc" android:keyEdgeFlags="right"/>
+        <Key android:codes="24" android:keyLabel="" android:keyIcon="@drawable/canc" android:keyEdgeFlags="right"/>
     </Row>
 
     <Row>
         <Key android:codes="-66" android:keyLabel="#+=" android:keyEdgeFlags="left"/>
-        <Key android:codes="-66" android:keyLabel="←"/>
-        <Key android:codes="-66"  android:keyLabel="→"/>
+        <Key android:codes="-66" android:keyLabel="" android:keyIcon="@drawable/left_arrow"/>
+        <Key android:codes="-66"  android:keyLabel="" android:keyIcon="@drawable/right_arrow"/>
         <Key android:codes="32" android:keyLabel=" " />
         <Key android:codes="45" android:keyLabel="-" />
         <Key android:codes="95"  android:keyLabel="_" />
-        <Key android:codes="66"  android:keyLabel="Enter" android:keyEdgeFlags="right"/>
+        <Key android:codes="66"  android:keyLabel="" android:keyIcon="@drawable/trasferimento"  android:keyEdgeFlags="right"/>
     </Row>
 </Keyboard>

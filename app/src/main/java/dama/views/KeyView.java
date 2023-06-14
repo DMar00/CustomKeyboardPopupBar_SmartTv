@@ -59,6 +59,47 @@ public class KeyView extends ImageView {
         changeLabel(label, labelColor);
     }
 
+    /*public void setIcon(Drawable icon){
+        Canvas canvas = new Canvas(this.bitmap);
+        int canvasWidth = canvas.getWidth();
+        int canvasHeight = canvas.getHeight();
+        int drawableWidth = icon.getIntrinsicWidth();
+        int drawableHeight = icon.getIntrinsicHeight();
+
+        //float scale = Math.min((float) canvasWidth / drawableWidth, (float) canvasHeight / drawableHeight);
+        float scale = 0.3F;
+        int scaledWidth = (int) (drawableWidth * scale);
+        int scaledHeight = (int) (drawableHeight * scale);
+        int left = (canvasWidth - scaledWidth) / 2;
+        int top = (canvasHeight - scaledHeight) / 2;
+        int right = left + scaledWidth;
+        int bottom = top + scaledHeight;
+
+        Rect bounds = new Rect(left, top, right, bottom);
+        icon.setBounds(bounds);
+        icon.draw(canvas);
+    }*/
+    public void setIcon(Drawable icon) {
+        Canvas canvas = new Canvas(this.bitmap);
+        int canvasWidth = canvas.getWidth();
+        int canvasHeight = canvas.getHeight();
+        int drawableWidth = icon.getIntrinsicWidth();
+        int drawableHeight = icon.getIntrinsicHeight();
+
+        float scaleValue = 0.28F;
+        int scaledWidth = (int) (drawableWidth * scaleValue);
+        int scaledHeight = (int) (drawableHeight * scaleValue);
+
+        int left = (canvasWidth - scaledWidth) / 2;
+        int top = (canvasHeight - scaledHeight) / 2;
+        int right = left + scaledWidth;
+        int bottom = top + scaledHeight;
+
+        Rect bounds = new Rect(left, top, right, bottom);
+        icon.setBounds(bounds);
+        icon.draw(canvas);
+    }
+
 
     public void changeLabel(String label, String labelColor){
         this.label = label;
@@ -78,6 +119,12 @@ public class KeyView extends ImageView {
             canvas.drawText(this.label, x, y, paint);
         }
     }
+
+    /*public void setIcon(Drawable icon){
+        icon.setBounds(left, top, right, bottom);
+        icon.draw(canvas);
+        //You can use icon.getIntrinsicHeight() and icon.getIntrinsicWidth() to get the preferred size of the icon.
+    }*/
 
     public void changeDimension(int height, int width, int textSize){
         this.keyHeight = height;

@@ -40,6 +40,8 @@ public class KeyboardView extends TableLayout {
             Drawable key_drawable = getResources().getDrawable(R.drawable.key_background);
             for(int j=0; j<keys.size(); j++){
                 KeyView kv = new KeyView(getContext(), key_drawable, keys.get(j).getLabel(), colorLabel);
+                if(keys.get(j).getIcon()!=null)
+                    kv.setIcon(keys.get(j).getIcon());
                 kv.addKeyParams(keys.get(j).getCode(), false);
                 row.addKeyView(kv);
             }

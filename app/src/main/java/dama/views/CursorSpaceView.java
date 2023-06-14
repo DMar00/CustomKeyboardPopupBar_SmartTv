@@ -7,13 +7,14 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.BounceInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-
 import com.dama.customkeyboardpopupbarv2.R;
+import dama.viewsup.KeyView2;
 
 public class CursorSpaceView extends FrameLayout {
     private KeyView cursor;
@@ -21,6 +22,7 @@ public class CursorSpaceView extends FrameLayout {
     private KeyView highlightGreen;
     private KeyView highlightYellow;
     private KeyView highlightBlue;
+    private boolean isAnimRunning = false;
 
     public CursorSpaceView(@NonNull Context context) {
         super(context);
@@ -38,6 +40,7 @@ public class CursorSpaceView extends FrameLayout {
         //init cursor
         Drawable cs = getResources().getDrawable(R.drawable.cursor);
         cursor = new KeyView(getContext(), cs, null, "#FBFBFB");
+
         initPosition(keyView, 0);
         //init highlight
         Drawable hl = getResources().getDrawable(R.drawable.suggestion_key);
@@ -136,12 +139,16 @@ public class CursorSpaceView extends FrameLayout {
                 Animation.RELATIVE_TO_SELF, 0f, Animation.ABSOLUTE, x - cursor.getX(),
                 Animation.RELATIVE_TO_SELF, 0f, Animation.ABSOLUTE, y - cursor.getY()
         );
-        animation.setDuration(350);
+        animation.setDuration(100); //350
 
+        //animation.setFillAfter(true);
+        /*animation.setFillBefore(true);*/
+        //animation.setInterpolator(new Sequen);
         //add listener
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
+                isAnimRunning = true;
             }
 
             @Override
@@ -157,6 +164,8 @@ public class CursorSpaceView extends FrameLayout {
                 cursor.setLayoutParams(layoutParams);
 
                 cursor.changeDimension(keyView.getKeyHeight(), keyView.getKeyWidth(), 0);
+                //cursor.setDimens(keyView.getKeyHeight(), keyView.getKeyWidth());
+                isAnimRunning = false;
             }
 
             @Override
@@ -165,6 +174,12 @@ public class CursorSpaceView extends FrameLayout {
         });
 
         //start animation on view
+        /*if(!isAnimRunning)
+            cursor.startAnimation(animation);*/
         cursor.startAnimation(animation);
+    }
+
+    public boolean isAnimRunning() {
+        return isAnimRunning;
     }
 }
