@@ -1,6 +1,7 @@
 package dama.controllers;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -79,7 +80,6 @@ public class SuggestionsController {
     }
 
     private String getSuggestions(String context, String suggestionData) {
-        //todo problem if i write symbols
         int sequenceNumber = sequenceToNum(context);
         return suggestionData.substring(sequenceNumber*NUM_SUG,(sequenceNumber*NUM_SUG)+NUM_SUG);
     }

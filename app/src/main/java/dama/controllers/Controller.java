@@ -216,7 +216,7 @@ public abstract class Controller {
     public void showPopUpBar(String ctx){
         //generate suggestions checking letters pressed
         char[] suggestions = getSuggestions(ctx);
-
+        Log.d("showPopUpBar",suggestions.length+"");
         //fill popUpBar
         int suggestionsLength = suggestions.length;
         barKeys.clear();
@@ -279,11 +279,8 @@ public abstract class Controller {
         hidePopUpBar();
 
         //set new focus
-        if(!cursorSpaceView.isAnimRunning()){   //todo add if - DD
-            setFocus(newFocus);
-            moveFocusPosition(getFocus());
-        }
-
+        setFocus(newFocus);
+        moveFocusPosition(getFocus());
 
         //show bar on new focus
         showPopUpBar(ctx);
@@ -294,6 +291,7 @@ public abstract class Controller {
         //char prevChar = getKeyAtPos(getPrevFocus().getRow(), getPrevFocus().getCol()).getLabel().charAt(0);
         char focusChar = getKeyAtPos(getFocus().getRow(), getFocus().getCol()).getLabel().charAt(0);
         char ch[] = getSuggestionsController().generateSuggestions(ctx);
+
         char[] suggestions = new char[MAX_SUG];
         for(int i=0, j=0; i<ch.length && j<MAX_SUG; i++){
             if(ch[i] != focusChar){
@@ -302,6 +300,7 @@ public abstract class Controller {
             }
         }
         return suggestions;
+
     }
 
     public boolean isBarsShown() {

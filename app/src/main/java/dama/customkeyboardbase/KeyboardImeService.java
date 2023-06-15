@@ -30,7 +30,7 @@ public class KeyboardImeService extends InputMethodService {
     private FrameLayout rootView;
     private PopupBarView popupBarView;
     private String ctxString = "    ";
-    private String ctxText="";
+    private String written = "";
 
     @SuppressLint("InflateParams")
     @Override
@@ -66,10 +66,10 @@ public class KeyboardImeService extends InputMethodService {
         //hide bars
         controller.hidePopUpBar();
         //set initial focus
-        if(!controller.getCursorSpaceView().isAnimRunning()) {
+        //if(!controller.getCursorSpaceView().isAnimRunning()) {
             controller.setFocus(new Cell(1, 0));
             controller.moveFocusPosition(controller.getFocus());
-        }
+        //}
         //Log.d("KeyboardImeService", "onFinishInputView");
     }
 
@@ -94,10 +94,10 @@ public class KeyboardImeService extends InputMethodService {
                     }
                     Cell newCell = controller.newFocus(keyCode);
                     if (controller.isNextFocusable(newCell, keyCode)){
-                        if(!controller.getCursorSpaceView().isAnimRunning()){
+                        //if(!controller.getCursorSpaceView().isAnimRunning()){
                             controller.setFocus(newCell);
                             controller.moveFocusPosition(controller.getFocus());
-                        }
+                        //}
                     }
                     break;
                 case KeyEvent.KEYCODE_DPAD_CENTER:
@@ -108,11 +108,9 @@ public class KeyboardImeService extends InputMethodService {
                         //write char
                         handleText(key.getCode(), ic);
                         char c = (char) key.getCode();
-
-                        if(isLetter(c) && key.getCode()!= 66){ //is not enter key
+                        if((isLetter(c) || isOkKey(key.getCode())) && key.getCode()!= 66){ //is not enter key
                             ctxString = ctxString.substring(1) + key.getLabel();
                             controller.showPopUpBar(ctxString);
-                            Log.d("ctxString",""+ctxString);
                         }
                     }
                     break;
@@ -132,7 +130,7 @@ public class KeyboardImeService extends InputMethodService {
                 case KeyEvent.KEYCODE_PROG_YELLOW:
                     handleText( controller.getBarKeys().get(2).getCode(), ic);
                     ctxString = ctxString.substring(1) + controller.getBarKeys().get(2).getLabel();
-                    controller.pressColorKey(2, ctxString);
+                    controller.pressColorKey(2,ctxString);
                     break;
                 case KeyEvent.KEYCODE_4:
                 case KeyEvent.KEYCODE_PROG_BLUE:
@@ -146,17 +144,17 @@ public class KeyboardImeService extends InputMethodService {
         return false;
     }
 
+    private boolean isOkKey(int code){
+        return (code==32 || code==45 || code==95 || code==44 || code==46);
+    }
+
     private void handleText(int code, InputConnection ic){
         switch (code){
             case 24: //user press backspace
                 ic.deleteSurroundingText(1, 0);
-                //todo what's happen when i delete char
-                //char preChar = ic.getTextBeforeCursor(4,0).toString().charAt(0);
-                //ctxString = preChar + ctxString.substring(0,4);
                 break;
             case 66:
                 //enter key
-                Log.d("Handle", "enter key");
                 ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
                 ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER));
                 break;

@@ -5,8 +5,10 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
@@ -18,11 +20,14 @@ import dama.viewsup.KeyView2;
 
 public class CursorSpaceView extends FrameLayout {
     private KeyView cursor;
+    private float currX, currY;
     private KeyView highlightRed;
     private KeyView highlightGreen;
     private KeyView highlightYellow;
     private KeyView highlightBlue;
+
     private boolean isAnimRunning = false;
+    //private AnimationSet as = new AnimationSet(true);
 
     public CursorSpaceView(@NonNull Context context) {
         super(context);
@@ -52,6 +57,9 @@ public class CursorSpaceView extends FrameLayout {
         highlightYellow.changeDrawableColorStroke(ContextCompat.getColor(getContext(), R.color.yellow));
         highlightBlue = new KeyView(getContext(), hl, "", "#ffffff");
         highlightBlue.changeDrawableColorStroke(ContextCompat.getColor(getContext(), R.color.blue));
+
+        currX = cursor.getX();
+        currY = cursor.getY();
     }
 
     public void setPositionHighlights(KeyView r, KeyView g, KeyView yy, KeyView b){
@@ -126,7 +134,32 @@ public class CursorSpaceView extends FrameLayout {
         });
     }
 
-    public void moveCursor(KeyView keyView){
+    public synchronized void moveCursor(KeyView keyView){
+        //calculate destination coordinates
+        Rect offsetViewBounds = new Rect();
+        keyView.getDrawingRect(offsetViewBounds);
+        offsetDescendantRectToMyCoords(keyView, offsetViewBounds);
+        int x = offsetViewBounds.left;
+        int y = offsetViewBounds.top;
+        float newx = x - cursor.getX();
+        float newy = y - cursor.getY();
+
+        //create animation
+        TranslateAnimation animation = new TranslateAnimation(currX,newx,currY,newy);
+        animation.setFillAfter(true);
+        animation.setFillBefore(true);
+        animation.setDuration(150); //350
+
+        //start animation on view
+        cursor.changeDimension(keyView.getKeyHeight(), keyView.getKeyWidth(), 0);
+        cursor.startAnimation(animation);
+
+        //update
+        this.currX = newx;
+        this.currY = newy;
+    }
+
+    /*public void moveCursor(KeyView keyView){
         //calculate destination coordinates
         Rect offsetViewBounds = new Rect();
         keyView.getDrawingRect(offsetViewBounds);
@@ -139,16 +172,16 @@ public class CursorSpaceView extends FrameLayout {
                 Animation.RELATIVE_TO_SELF, 0f, Animation.ABSOLUTE, x - cursor.getX(),
                 Animation.RELATIVE_TO_SELF, 0f, Animation.ABSOLUTE, y - cursor.getY()
         );
-        animation.setDuration(100); //350
+        animation.setDuration(350);
+        animation.setInterpolator(new AccelerateDecelerateInterpolator());
 
-        //animation.setFillAfter(true);
-        /*animation.setFillBefore(true);*/
-        //animation.setInterpolator(new Sequen);
-        //add listener
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                isAnimRunning = true;
+                //isAnimRunning = true;
+                if(cursor.getAnimation()!=null){
+                    clearAnimation();
+                }
             }
 
             @Override
@@ -162,10 +195,8 @@ public class CursorSpaceView extends FrameLayout {
                 layoutParams.leftMargin = x;
                 layoutParams.topMargin = y;
                 cursor.setLayoutParams(layoutParams);
-
+                //isAnimRunning = false;
                 cursor.changeDimension(keyView.getKeyHeight(), keyView.getKeyWidth(), 0);
-                //cursor.setDimens(keyView.getKeyHeight(), keyView.getKeyWidth());
-                isAnimRunning = false;
             }
 
             @Override
@@ -174,10 +205,8 @@ public class CursorSpaceView extends FrameLayout {
         });
 
         //start animation on view
-        /*if(!isAnimRunning)
-            cursor.startAnimation(animation);*/
         cursor.startAnimation(animation);
-    }
+    }*/
 
     public boolean isAnimRunning() {
         return isAnimRunning;

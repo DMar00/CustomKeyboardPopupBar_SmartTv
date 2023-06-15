@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
  * row starts from 0
  * col starts from 0
  */
-public class Cell {
+public class Cell{
     private int row;
     private int col;
 
